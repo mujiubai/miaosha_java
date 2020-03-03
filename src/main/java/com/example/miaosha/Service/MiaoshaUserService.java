@@ -11,7 +11,6 @@ import com.example.miaosha.util.UUIDUtil;
 import com.example.miaosha.vo.LoginVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -30,7 +29,7 @@ public class MiaoshaUserService {
         return miaoshaUserDAO.getById(id);
     }
 
-    public Boolean login(HttpServletResponse response, LoginVo loginVo) {
+    public boolean  login(HttpServletResponse response, LoginVo loginVo) {
         if (loginVo == null) {
             throw new GlobalException(CodeMsg.SERVER_ERROR);
         }
@@ -67,6 +66,7 @@ public class MiaoshaUserService {
             return null;
         }
         MiaoshaUser user=redisService.get(MiaoshaUserKey.token, token, MiaoshaUser.class);
+        //延长有效期
         if (user != null) {
             addCookie(response,token,user);
         }

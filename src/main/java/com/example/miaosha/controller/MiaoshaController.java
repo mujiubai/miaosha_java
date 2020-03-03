@@ -10,6 +10,7 @@ import com.example.miaosha.result.CodeMsg;
 import com.example.miaosha.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,12 @@ public class MiaoshaController {
 
     @Autowired
     MiaoshaService miaoshaService;
-    @RequestMapping("do_miaosha")
+
+    /**
+     * 1000*2  第一次qps2200 第二次2500
+     *
+     * */
+    @RequestMapping("/do_miaosha")
     public String doMiaosha(Model model, MiaoshaUser user, @RequestParam("goodsId") long goodsId) {
         if (user == null) {
             return "login";
@@ -33,7 +39,8 @@ public class MiaoshaController {
         model.addAttribute("user", user);
         //判断是否还有库存
         GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
-        int stock = goods.getGoodsStock();
+        int stock = goods.getStockCount();
+        System.out.println(stock);
         if (stock <= 0) {
             model.addAttribute("errmsg", CodeMsg.MIAOSHA_OVER.getMsg());
             return "miaosha_fail";

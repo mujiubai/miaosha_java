@@ -19,7 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/goods")
-public class GoodController {
+public class GoodsController {
     @Autowired
     private MiaoshaUserService userService;
 
@@ -30,6 +30,7 @@ public class GoodController {
      * 此处原先需要对cookies进行处理并最后获得user对象
      * 但将处理逻辑移入了UserArgumentResolver类处理逻辑中
      * 原理是参数传入的时候自动检测到cookies，再对其进行处理，最后返回一个user对象
+     * 1000*20   qps：2600
      */
     @RequestMapping("/to_list")
     public String toList(Model model, MiaoshaUser user) {
