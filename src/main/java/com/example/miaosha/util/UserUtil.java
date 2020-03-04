@@ -1,5 +1,7 @@
 package com.example.miaosha.util;
 //用于生成user token测试数据
+//使用前将logincontroller返回token
+//MiaoshaUserService的login方法放回token
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;

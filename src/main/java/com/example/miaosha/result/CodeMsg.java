@@ -17,7 +17,7 @@ public class CodeMsg {
     //商品模块 5003XX
 
     //订单模块 5004XX
-
+    public static CodeMsg ORDER_NOT_EXIST = new CodeMsg(500204, "订单不存在");
     //秒杀模块 5005XX
     public static CodeMsg MIAOSHA_OVER= new CodeMsg(500501, "商品秒杀结束");
     public static CodeMsg MIAOSHA_REPEATE= new CodeMsg(500502, "不能重复秒杀");
