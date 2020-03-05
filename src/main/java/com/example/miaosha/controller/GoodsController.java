@@ -3,6 +3,7 @@ package com.example.miaosha.controller;
 import com.example.miaosha.Service.GoodsService;
 import com.example.miaosha.Service.MiaoshaUserService;
 import com.example.miaosha.domain.MiaoshaUser;
+import com.example.miaosha.rabbitmp.MQReceiver;
 import com.example.miaosha.redis.GoodsKey;
 import com.example.miaosha.redis.MiaoshaUserKey;
 import com.example.miaosha.redis.RedisService;
@@ -11,6 +12,8 @@ import com.example.miaosha.vo.GoodsDetailVo;
 import com.example.miaosha.vo.GoodsVo;
 import org.apache.catalina.core.ApplicationContext;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +41,8 @@ public class GoodsController {
     @Autowired
     private ThymeleafViewResolver thymeleafViewResolver;
 
+    @Autowired
+    private static Logger log = LoggerFactory.getLogger(MQReceiver.class);
 
     /**
      * 此处原先需要对cookies进行处理并最后获得user对象
@@ -102,12 +107,14 @@ public class GoodsController {
         String html = redisService.get(GoodsKey.getGoodsDetail, ""+goodsId, String.class);
         if (!StringUtils.isEmpty(html)) {
             //取缓存
+            log.info("取缓存成功");
             return html;
         }
         //手动渲染
         WebContext ctx = new WebContext(request, response, request.getServletContext(), request.getLocale(), model.asMap());
         html = thymeleafViewResolver.getTemplateEngine().process("goods_detail", ctx);
         if (!StringUtils.isEmpty(html)) {
+            log.info("设置缓存成功");
             redisService.set(GoodsKey.getGoodsDetail, ""+goodsId, html);
         }
         return html;

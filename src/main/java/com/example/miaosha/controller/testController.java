@@ -2,6 +2,7 @@ package com.example.miaosha.controller;
 
 import com.example.miaosha.Service.UserService;
 import com.example.miaosha.domain.User;
+import com.example.miaosha.rabbitmp.MQSender;
 import com.example.miaosha.redis.RedisService;
 import com.example.miaosha.redis.UserKey;
 import com.example.miaosha.result.CodeMsg;
@@ -18,11 +19,12 @@ public class testController {
     private UserService userService;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    MQSender sender;
 
-    @RequestMapping("/hello")
-    public String home() {
-        return "hello!!world，it me";
-    }
+
+
+
 
     @RequestMapping("/user")
     @ResponseBody
